@@ -1,6 +1,6 @@
 /* One-off generator for the Flexi Tours static site.
    Run:  node _build/build.mjs
-   Output: plain .html files in /site — no build step needed to host them.
+   Output: plain .html files at the repo root — no build step needed to host them.
    Keeping this file lets you re-generate every page after editing the shared
    nav/footer once, instead of hand-editing six files. Safe to delete. */
 
@@ -9,7 +9,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(HERE, "..", "site");
+const ROOT = join(HERE, "..");
 mkdirSync(ROOT, { recursive: true });
 
 /* Full text of the 22 travel guides, migrated off the old site. */
@@ -989,7 +989,7 @@ ${ctaBand("Ready to see it for yourself?")}`,
 for (const p of pages) {
   writeFileSync(join(ROOT, p.file), shell(p), "utf8");
 }
-console.log("Pages written to site/:");
+console.log("Pages written to the repo root:");
 console.log("  core   : " + pages.filter((p) => !p.articleLd).map((p) => p.file).join(", "));
 console.log("  guides : " + pages.filter((p) => p.articleLd).length + " article pages");
 console.log("\nDone — " + pages.length + " pages.");

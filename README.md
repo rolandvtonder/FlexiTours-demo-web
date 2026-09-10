@@ -1,9 +1,15 @@
 # Flexi Tours — website
 
-A static site (plain HTML, CSS and JavaScript). No build step, no dependencies,
-no server-side code. Upload the contents of `site/` to any web host and it works.
+**Live demo: https://rolandvtonder.github.io/FlexiTours-demo-web/**
 
-**28 pages** — 6 main pages plus 22 travel guide articles.
+A static site (plain HTML, CSS and JavaScript). No build step, no dependencies,
+no server-side code. **28 pages** — 6 main pages plus 22 travel guide articles.
+
+GitHub Pages serves it straight from the `main` branch of this repo. Every push
+redeploys it automatically, usually within a minute or two.
+
+To host it somewhere else, upload everything in this folder except `_build/` and
+`README.md` — those two are for editing the site, not for visitors.
 
 ---
 
@@ -32,24 +38,23 @@ so the site shows six. If you find the seventh, add it (see below).
 ## Files
 
 ```
-site/                        ← this is what you upload
-  index.html                 Home
-  tours.html                 6 tours with full itineraries + guide prices
-  transfers.html             Transfer rates, inclusions, why-use-us
-  about.html                 Story, what you get, branches, hours
-  guides.html                Index of all 22 travel guides
-  contact.html               Contact details, branches, hours
-  guide-<slug>.html          22 article pages, one per travel guide
-  assets/
-    css/styles.css           All styling. Design tokens at the top.
-    js/main.js               Nav, mobile menu, scroll animations
-    img/logo.png             Your logo
-    img/guides/*.webp        22 photos at 1536x1024
-    img/tours/*              Original tour photos from the old site (600px)
+index.html                 Home
+tours.html                 6 tours with full itineraries + guide prices
+transfers.html             Transfer rates, inclusions, why-use-us
+about.html                 Story, what you get, branches, hours
+guides.html                Index of all 22 travel guides
+contact.html               Contact details, branches, hours
+guide-<slug>.html          22 article pages, one per travel guide
+assets/
+  css/styles.css           All styling. Design tokens at the top.
+  js/main.js               Nav, mobile menu, scroll animations
+  img/logo.png             Your logo
+  img/guides/*.webp        22 photos at 1536x1024
+  img/tours/*              Original tour photos from the old site (600px)
 
-_build/build.mjs             Optional generator — see below
-_build/articles.json         Full text of the 22 travel guides
-README.md                    This file
+_build/build.mjs           Optional generator — see below
+_build/articles.json       Full text of the 22 travel guides
+README.md                  This file
 ```
 
 ### Editing
@@ -67,6 +72,24 @@ node _build/build.mjs
 That regenerates every page. It needs Node.js but **only when you run it** — the
 site itself never needs it.
 
+### Publishing a change
+
+From this folder:
+
+```bash
+git add -A
+```
+
+```bash
+git commit -m "Describe what you changed"
+```
+
+```bash
+git push
+```
+
+The live demo updates by itself a minute or two after the push.
+
 ### Adding a review
 
 Open `_build/build.mjs`, find the `REVIEWS` list near the top, and add an entry:
@@ -81,14 +104,16 @@ Then re-run the build. Only paste text guests actually wrote — never invent on
 ### Adding a travel guide
 
 Add an entry to `_build/articles.json` (`slug`, `title`, `excerpt`, `date`,
-`isoDate`, `img`, `content` as HTML), drop the image into
-`site/assets/img/guides/`, and re-run the build. A new page, a card on
-`guides.html`, and the related-article links are all generated for you.
+`isoDate`, `img`, `content` as HTML), drop the image into `assets/img/guides/`,
+and re-run the build. A new page, a card on `guides.html`, and the
+related-article links are all generated for you.
 
 ### Preview locally
 
+From this folder:
+
 ```bash
-npx serve site
+npx serve
 ```
 
 ---
@@ -144,6 +169,6 @@ Across all 28 pages:
   use your 1536px guide photos instead. If you have original high-resolution photos
   of your own tours and vehicles, they would be a straight swap and the single
   biggest further improvement to the site.
-- When you switch the domain over, the old `?post=...` article URLs will stop
+- When you switch the real domain over, the old `?post=...` article URLs will stop
   working. If any of them are ranking in Google, set up redirects to the matching
   `guide-<slug>.html` page — the slugs are unchanged, so it is a mechanical mapping.
