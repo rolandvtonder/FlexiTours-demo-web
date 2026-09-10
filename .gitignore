@@ -1,0 +1,11 @@
+# Raw source material (screenshots, reviews) — not part of the website
+MEDiaa/
+
+# Local tool config
+.claude/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+node_modules/
