@@ -258,16 +258,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hero h1 .thin{font-weight:300;font-style:italic;letter-spacing:-.03em}
 .hero .lead{margin-inline:auto;text-align:center;color:#E7EEF2;text-shadow:0 2px 18px rgba(0,0,0,.7);max-width:52ch}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:var(--s-4)}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;
-  background:rgba(255,255,255,.11);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.22);
-  border-radius:var(--r-pill);
-  padding:8px 18px;margin-bottom:var(--s-4);
-  font-size:.8125rem;font-weight:500;color:#fff;
-}
-.hero-badge b{font-weight:700}
 .stars{display:inline-flex;gap:2px;color:var(--brand)}
 .stars svg{width:14px;height:14px}
 

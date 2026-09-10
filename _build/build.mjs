@@ -781,7 +781,6 @@ pages.push({
     <img src="assets/img/guides/chapmans-peak.webp" alt="Chapman's Peak Drive winding along the Atlantic coastline near Cape Town" width="1536" height="1024" fetchpriority="high">
   </div>
   <div class="wrap hero-inner">
-    <p class="hero-badge">${stars5} <b>4.9</b> on Google · Cape Town &amp; Centurion</p>
     <h1 class="d-xl">Cape&nbsp;Town<br><span class="thin">on your terms</span></h1>
     <p class="lead">Private and shared tours, safaris, winelands tastings and airport transfers — built around your dates, your group and your pace.</p>
     <div class="hero-actions">
