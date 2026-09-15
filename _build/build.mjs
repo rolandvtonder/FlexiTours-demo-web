@@ -78,7 +78,7 @@ const topbar = () => `<div class="topbar">
     <span class="sep" aria-hidden="true">·</span>
     <a href="${WA}" target="_blank" rel="noopener">${I.wa} WhatsApp 078 047 4236</a>
     <span class="sep" aria-hidden="true">·</span>
-    <a href="tel:+27212041918">${I.phone} 021 204 1918</a>
+    <a href="tel:+27732502549">${I.phone} 073 250 2549</a>
   </div>
 </div>`;
 
@@ -110,7 +110,7 @@ const header = (rawPage) => ((page) => `<header class="nav">
   </nav>
   <div class="drawer-foot">
     <a class="btn btn-primary btn-block" href="${waLink("Hi Flexi Tours, I'd like to request a quote.")}" target="_blank" rel="noopener">Chat on WhatsApp</a>
-    <a class="btn btn-ghost btn-block" href="tel:+27212041918">Call 021 204 1918</a>
+    <a class="btn btn-ghost btn-block" href="tel:+27732502549">Call 073 250 2549</a>
   </div>
 </div>`)(navKey(rawPage));
 
@@ -129,14 +129,14 @@ const footer = () => `<footer class="footer">
         <h3>Contact</h3>
         <ul>
           <li><a href="${WA}" target="_blank" rel="noopener">WhatsApp 078 047 4236</a></li>
-          <li><a href="tel:+27212041918">021 204 1918</a></li>
+          <li><a href="tel:+27732502549">073 250 2549</a></li>
           <li><a href="mailto:bookings@flexi-tours.co.za">bookings@flexi-tours.co.za</a></li>
         </ul>
         <p class="small muted" style="margin-top:10px">Open 7 days · 07:00&ndash;23:30</p>
       </div>
       <div>
         <h3>Branches</h3>
-        <address><b>Cape Town</b>Unit 21, Hangar 17,<br>17th Road, Maitland</address>
+        <address><b>Cape Town</b>Unit C6, The Exchange,<br>1 School Street, Milnerton</address>
         <address><b>Centurion</b>Unit C6, Edward Park,<br>124 Edward Avenue, Hennopspark</address>
       </div>
     </div>
@@ -159,7 +159,7 @@ const LD = JSON.stringify({
   url: "https://www.flexi-tours.co.za/",
   logo: "https://www.flexi-tours.co.za/images/logo.png",
   email: "bookings@flexi-tours.co.za",
-  telephone: "+27212041918",
+  telephone: "+27780474236",
   priceRange: "R250 - R2500",
   areaServed: ["Cape Town", "Stellenbosch", "Franschhoek", "Paarl", "Constantia", "Durbanville", "Garden Route", "Western Cape"],
   aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "7" },
@@ -169,7 +169,7 @@ const LD = JSON.stringify({
     opens: "07:00", closes: "23:30",
   },
   address: [
-    { "@type": "PostalAddress", streetAddress: "Unit 21, Hangar 17, 17th Road, Maitland", addressLocality: "Cape Town", addressRegion: "Western Cape", addressCountry: "ZA" },
+    { "@type": "PostalAddress", streetAddress: "Unit C6, The Exchange, 1 School Street, Milnerton", addressLocality: "Cape Town", addressRegion: "Western Cape", addressCountry: "ZA" },
     { "@type": "PostalAddress", streetAddress: "Unit C6, Edward Park, 124 Edward Avenue, Hennopspark", addressLocality: "Centurion", addressRegion: "Gauteng", addressCountry: "ZA" },
   ],
 }, null, 2);
@@ -274,10 +274,10 @@ const contactCards = (heading) => `<section class="section-sm">
         <span class="ccard-ico">${I.wa}</span><h3>WhatsApp</h3><p><strong>078 047 4236</strong><br>Fastest way to reach us</p></a></li>
       <li><a class="ccard" href="mailto:bookings@flexi-tours.co.za" data-reveal data-delay="70">
         <span class="ccard-ico b">${I.mail}</span><h3>Email</h3><p><strong>bookings@<wbr>flexi-tours.co.za</strong><br>For quotes and itineraries</p></a></li>
-      <li><a class="ccard" href="tel:+27212041918" data-reveal data-delay="140">
-        <span class="ccard-ico">${I.phone}</span><h3>Phone</h3><p><strong>021 204 1918</strong><br>Mon&ndash;Sun, 07:00&ndash;23:30</p></a></li>
+      <li><a class="ccard" href="tel:+27732502549" data-reveal data-delay="140">
+        <span class="ccard-ico">${I.phone}</span><h3>Phone</h3><p><strong>073 250 2549</strong><br>Mon&ndash;Sun, 07:00&ndash;23:30</p></a></li>
       <li><div class="ccard" data-reveal data-delay="210">
-        <span class="ccard-ico b">${I.pin}</span><h3>Branches</h3><p><strong>Cape Town</strong> &middot; Maitland<br><strong>Centurion</strong> &middot; Hennopspark</p></div></li>
+        <span class="ccard-ico b">${I.pin}</span><h3>Branches</h3><p><strong>Cape Town</strong> &middot; Milnerton<br><strong>Centurion</strong> &middot; Hennopspark</p></div></li>
     </ul>
   </div>
 </section>`;
@@ -594,7 +594,7 @@ ${ctaBand("Need a lift from the airport?")}`,
 pages.push({
   file: "about.html",
   title: "About Flexi Tours | Cape Town Tour &amp; Transfer Operator",
-  desc: "Flexi Tours (Pty) Ltd runs tours, activities, transfers and adventures across Cape Town and the Western Cape, with branches in Maitland and Centurion. Rated 4.9 on Google.",
+  desc: "Flexi Tours (Pty) Ltd runs tours, activities, transfers and adventures across Cape Town and the Western Cape, with branches in Cape Town and Centurion. Rated 4.9 on Google.",
   og: "private-tours.webp",
   body: `${phead({
     img: "waterfront-tour.webp",
@@ -666,7 +666,7 @@ pages.push({
   <div class="wrap">
     <div class="sec-head" data-reveal><div><p class="label">Find us</p><h2 class="d-md">Two branches, one team</h2></div></div>
     <ul class="grid-contact">
-      <li><div class="ccard" data-reveal><span class="ccard-ico">${I.pin}</span><h3>Cape Town</h3><p>Unit 21, Hangar 17,<br>17th Road, Maitland,<br>Cape Town</p></div></li>
+      <li><div class="ccard" data-reveal><span class="ccard-ico">${I.pin}</span><h3>Cape Town</h3><p>Unit C6, The Exchange,<br>1 School Street, Milnerton,<br>Cape Town</p></div></li>
       <li><div class="ccard" data-reveal data-delay="70"><span class="ccard-ico b">${I.pin}</span><h3>Centurion</h3><p>Unit C6, Edward Park,<br>124 Edward Avenue,<br>Hennopspark, Centurion</p></div></li>
       <li><div class="ccard" data-reveal data-delay="140"><span class="ccard-ico">${I.clock}</span><h3>Opening hours</h3><p><strong>Monday&ndash;Sunday</strong><br>07:00&ndash;23:30</p></div></li>
       <li><div class="ccard" data-reveal data-delay="210"><span class="ccard-ico b">${I.shield}</span><h3>Registered</h3><p><strong>Flexi Tours (Pty) Ltd</strong><br>Western Cape &amp; Gauteng</p></div></li>
@@ -708,7 +708,7 @@ ${ctaBand("Read enough? Let us drive.")}`,
 pages.push({
   file: "contact.html",
   title: "Contact Flexi Tours | Cape Town Tours &amp; Transfers",
-  desc: "Get in touch with Flexi Tours for Cape Town tours, safaris, winelands tastings and airport transfers. WhatsApp 078 047 4236, call 021 204 1918 or email bookings@flexi-tours.co.za.",
+  desc: "Get in touch with Flexi Tours for Cape Town tours, safaris, winelands tastings and airport transfers. WhatsApp 078 047 4236, call 073 250 2549 or email bookings@flexi-tours.co.za.",
   og: "cape-point.webp",
   body: `${phead({
     img: "boulders-penguins.webp",
@@ -749,7 +749,7 @@ ${contactCards("Four ways to reach us")}
   <div class="wrap">
     <div class="sec-head" data-reveal><div><p class="label">Branches &amp; hours</p><h2 class="d-md">Where to find us</h2></div></div>
     <ul class="grid-contact">
-      <li><div class="ccard" data-reveal><span class="ccard-ico">${I.pin}</span><h3>Cape Town branch</h3><p>Unit 21, Hangar 17,<br>17th Road, Maitland,<br>Cape Town, Western Cape</p></div></li>
+      <li><div class="ccard" data-reveal><span class="ccard-ico">${I.pin}</span><h3>Cape Town branch</h3><p>Unit C6, The Exchange,<br>1 School Street, Milnerton,<br>Cape Town, Western Cape</p></div></li>
       <li><div class="ccard" data-reveal data-delay="70"><span class="ccard-ico b">${I.pin}</span><h3>Centurion branch</h3><p>Unit C6, Edward Park,<br>124 Edward Avenue,<br>Hennopspark, Centurion</p></div></li>
       <li><div class="ccard" data-reveal data-delay="140"><span class="ccard-ico">${I.clock}</span><h3>Opening hours</h3><p><strong>Monday&ndash;Sunday</strong><br>07:00&ndash;23:30<br>Seven days a week</p></div></li>
       <li><a class="ccard" href="https://www.google.com/search?q=Flexi+Tours+Cape+Town+reviews" target="_blank" rel="noopener" data-reveal data-delay="210"><span class="ccard-ico b">${I.star}</span><h3>Reviews</h3><p><strong>4.9 out of 5</strong><br>From 7 Google reviews ${I.ext}</p></a></li>

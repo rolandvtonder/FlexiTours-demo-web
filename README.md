@@ -19,16 +19,16 @@ Everything is wired up: the six real Google reviews are in, the Facebook and
 Instagram links point at your actual profiles, and all 22 travel guides now live
 on this site rather than the old one.
 
-The contact details in use are the ones you confirmed:
+The contact details in use (phone numbers and Cape Town address confirmed on
+15 September 2026):
 
-- Phone **021 204 1918** · WhatsApp **078 047 4236** · **bookings@flexi-tours.co.za**
-- Cape Town: Unit 21, Hangar 17, 17th Road, Maitland
+- WhatsApp **078 047 4236** · Phone **073 250 2549** · **bookings@flexi-tours.co.za**
+- Cape Town: Unit C6, The Exchange, 1 School Street, Milnerton
 - Centurion: Unit C6, Edward Park, 124 Edward Avenue, Hennopspark
 - Entity: **Flexi Tours (Pty) Ltd**
 
-Your old site had conflicting versions of the phone number, the Cape Town address
-and the company name. These are the ones you picked — worth a final check that
-they match your Google listing.
+The Centurion address and the company name were carried over from the old site
+and haven't been reconfirmed yet.
 
 One loose end: Google shows **7 reviews** but only **6** were in the screenshots,
 so the site shows six. If you find the seventh, add it (see below).
