@@ -154,7 +154,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* Text link with arrow */
 .tlink{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--brand);min-height:44px}
-.tlink svg{transition:transform var(--d-fast) var(--e-out)}
+.tlink svg{width:17px;height:17px;flex:none;transition:transform var(--d-fast) var(--e-out)}
 .tlink:hover svg{transform:translateX(4px)}
 
 /* ---------- 6. Utility bar ---------- */
@@ -260,6 +260,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:var(--s-4)}
 .stars{display:inline-flex;gap:2px;color:var(--brand)}
 .stars svg{width:14px;height:14px}
+/* Three-line headline: thin / bold / thin */
+.hero-title{font-size:clamp(3rem,10.5vw,9.25rem);line-height:.9}
 
 /* ---------- 9. Marquee ---------- */
 .marquee{
@@ -329,6 +331,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .card-body{padding:var(--s-3);display:flex;flex-direction:column;gap:14px;flex:1}
 .card-body h3{font-size:1.3rem;letter-spacing:-.03em}
 .card-body p{font-size:.9375rem;color:var(--t-lo);line-height:1.6}
+.card-body .card-stops{color:var(--t-mid)}
 .card-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:4px}
 .chip{
   display:inline-flex;align-items:center;gap:6px;
@@ -353,6 +356,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .checks{display:grid;gap:14px;margin-top:var(--s-4)}
 .checks li{display:flex;gap:13px;align-items:flex-start;font-size:.9688rem;line-height:1.55;color:var(--t-mid)}
 .checks svg{width:21px;height:21px;flex:none;margin-top:2px;color:var(--brand)}
+.checks b{color:var(--t-hi);font-weight:600}
 
 /* ---------- 13. Steps ---------- */
 .steps{display:grid;gap:var(--s-3)}
@@ -485,6 +489,7 @@ a.ccard:hover{border-color:rgba(255,127,0,.5);transform:translateY(-3px)}
 .ccard h3{font-size:1.0625rem;letter-spacing:-.024em}
 .ccard p{font-size:.9375rem;color:var(--t-lo);line-height:1.55;overflow-wrap:anywhere}
 .ccard strong{color:var(--t-hi);font-weight:600}
+.ccard p svg{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-left:2px}
 
 /* ---------- 20. Footer ---------- */
 /* Bottom padding clears the fixed WhatsApp button (56px + offset). */

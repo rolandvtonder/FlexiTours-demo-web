@@ -22,7 +22,7 @@ on this site rather than the old one.
 The contact details in use (phone numbers and Cape Town address confirmed on
 15 September 2026):
 
-- WhatsApp **078 047 4236** · Phone **073 250 2549** · **bookings@flexi-tours.co.za**
+- WhatsApp **+27 78 047 4236** · Phone **+27 73 250 2549** · **bookings@flexi-tours.co.za**
 - Cape Town: Unit C6, The Exchange, 1 School Street, Milnerton
 - Centurion: Unit C6, Edward Park, 124 Edward Avenue, Hennopspark
 - Entity: **Flexi Tours (Pty) Ltd**

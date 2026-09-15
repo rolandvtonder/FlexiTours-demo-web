@@ -39,6 +39,11 @@ const INSTAGRAM = "https://www.instagram.com/flexi.tours/";
 const WA = "https://wa.me/27780474236";
 const waLink = (msg) => `${WA}?text=${encodeURIComponent(msg)}`;
 
+/* Main call to action: opens WhatsApp with the planning questions ready to fill in. */
+const PLAN = waLink("Hi Flexi Tours, I'd like help planning my Cape Town trip.\n\nDates:\nNumber of people:\nHotel/location:\nTours I'm interested in:");
+/* Per-tour enquiry, pre-filled with the tour name. */
+const checkLink = (tour) => waLink(`Hi Flexi Tours, I'd like to check availability for the ${tour}.\n\nDates:\nNumber of people:\nHotel/location:`);
+
 const I = {
   check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>`,
   arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`,
@@ -57,6 +62,10 @@ const I = {
   van: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M2 16V9a2 2 0 0 1 2-2h9l4 4h3a2 2 0 0 1 2 2v3"/><circle cx="7" cy="17.5" r="2"/><circle cx="17" cy="17.5" r="2"/><path d="M9 17.5h6M2 16h2"/></svg>`,
   wifi: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2.5 9a16 16 0 0 1 19 0M6 12.7a11 11 0 0 1 12 0M9.5 16.4a6 6 0 0 1 5 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>`,
   shield: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M12 3l7 3v6c0 4.4-3 8.2-7 9-4-.8-7-4.6-7-9V6Z"/><path d="m9 12 2 2 4-4"/></svg>`,
+  users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19c.6-3.2 3-5 6-5s5.4 1.8 6 5"/><path d="M16 5.2a3.2 3.2 0 0 1 0 6.1M18 14.4c1.7.7 2.8 2.3 3.1 4.6"/></svg>`,
+  calendar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>`,
+  tag: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8Z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>`,
+  chat: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.2A8.5 8.5 0 1 1 21 11.5Z"/></svg>`,
   fb: `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1Z"/></svg>`,
   ig: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>`,
 };
@@ -76,9 +85,9 @@ const topbar = () => `<div class="topbar">
   <div class="wrap">
     <a href="mailto:bookings@flexi-tours.co.za">${I.mail} bookings@flexi-tours.co.za</a>
     <span class="sep" aria-hidden="true">·</span>
-    <a href="${WA}" target="_blank" rel="noopener">${I.wa} WhatsApp 078 047 4236</a>
+    <a href="${WA}" target="_blank" rel="noopener">${I.wa} WhatsApp +27 78 047 4236</a>
     <span class="sep" aria-hidden="true">·</span>
-    <a href="tel:+27732502549">${I.phone} 073 250 2549</a>
+    <a href="tel:+27732502549">${I.phone} +27 73 250 2549</a>
   </div>
 </div>`;
 
@@ -94,7 +103,7 @@ const header = (rawPage) => ((page) => `<header class="nav">
       <nav class="nav-links" aria-label="Primary">
         ${NAV.map(([h, t]) => `<a href="${h}"${h === page ? ' aria-current="page"' : ""}>${t}</a>`).join("\n        ")}
       </nav>
-      <a class="btn btn-primary btn-sm nav-cta" href="${waLink("Hi Flexi Tours, I'd like to request a quote.")}" target="_blank" rel="noopener">${I.wa} Get a quote</a>
+      <a class="btn btn-primary btn-sm nav-cta" href="${PLAN}" target="_blank" rel="noopener">${I.wa} Plan my trip</a>
       <button class="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -109,8 +118,8 @@ const header = (rawPage) => ((page) => `<header class="nav">
     ${NAV.map(([h, t], i) => `<a href="${h}"${h === page ? ' aria-current="page"' : ""}>${t} <i>0${i + 1}</i></a>`).join("\n    ")}
   </nav>
   <div class="drawer-foot">
-    <a class="btn btn-primary btn-block" href="${waLink("Hi Flexi Tours, I'd like to request a quote.")}" target="_blank" rel="noopener">Chat on WhatsApp</a>
-    <a class="btn btn-ghost btn-block" href="tel:+27732502549">Call 073 250 2549</a>
+    <a class="btn btn-primary btn-block" href="${PLAN}" target="_blank" rel="noopener">${I.wa} Plan my trip on WhatsApp</a>
+    <a class="btn btn-ghost btn-block" href="tel:+27732502549">Call +27 73 250 2549</a>
   </div>
 </div>`)(navKey(rawPage));
 
@@ -128,8 +137,8 @@ const footer = () => `<footer class="footer">
       <div>
         <h3>Contact</h3>
         <ul>
-          <li><a href="${WA}" target="_blank" rel="noopener">WhatsApp 078 047 4236</a></li>
-          <li><a href="tel:+27732502549">073 250 2549</a></li>
+          <li><a href="${WA}" target="_blank" rel="noopener">WhatsApp +27 78 047 4236</a></li>
+          <li><a href="tel:+27732502549">Call +27 73 250 2549</a></li>
           <li><a href="mailto:bookings@flexi-tours.co.za">bookings@flexi-tours.co.za</a></li>
         </ul>
         <p class="small muted" style="margin-top:10px">Open 7 days · 07:00&ndash;23:30</p>
@@ -150,7 +159,7 @@ const footer = () => `<footer class="footer">
   </div>
 </footer>
 
-<a class="fab" href="${waLink("Hi Flexi Tours, I'd like to request a quote.")}" target="_blank" rel="noopener">${I.wa}<span>WhatsApp us</span></a>`;
+<a class="fab" href="${PLAN}" target="_blank" rel="noopener">${I.wa}<span>WhatsApp us</span></a>`;
 
 const LD = JSON.stringify({
   "@context": "https://schema.org",
@@ -252,16 +261,17 @@ const phead = ({ img, alt, label, h1, lead, crumb }) => `<section class="phead">
   </div>
 </section>`;
 
-const ctaBand = (heading = "Tell us your dates.<br>We will handle the rest.") => `<section class="section-sm">
+const ctaBand = (heading = "Coming to Cape Town?") => `<section class="section-sm">
   <div class="wrap">
     <div class="cta" data-reveal>
-      <p class="label" style="justify-content:center">Get started</p>
+      <p class="label" style="justify-content:center">Plan your trip</p>
       <h2 class="d-lg">${heading}</h2>
-      <p class="lead">Open seven days a week, 07:00 to 23:30. Most quotes come back the same day.</p>
+      <p class="lead">Tell us your dates. We'll handle the rest.</p>
       <div class="cta-actions">
-        <a class="btn btn-primary" href="${waLink("Hi Flexi Tours, I'd like to request a quote.")}" target="_blank" rel="noopener">${I.wa} WhatsApp us</a>
+        <a class="btn btn-primary" href="${PLAN}" target="_blank" rel="noopener">${I.wa} Plan my trip</a>
         <a class="btn btn-ghost" href="mailto:bookings@flexi-tours.co.za?subject=Tour%20enquiry">Email bookings</a>
       </div>
+      <p class="small muted" style="margin-top:var(--s-3)">Open seven days a week, 07:00&ndash;23:30</p>
     </div>
   </div>
 </section>`;
@@ -271,11 +281,11 @@ const contactCards = (heading) => `<section class="section-sm">
     ${heading ? `<div class="sec-head" data-reveal><div><p class="label">Reach us</p><h2 class="d-md">${heading}</h2></div></div>` : ""}
     <ul class="grid-contact">
       <li><a class="ccard" href="${WA}" target="_blank" rel="noopener" data-reveal>
-        <span class="ccard-ico">${I.wa}</span><h3>WhatsApp</h3><p><strong>078 047 4236</strong><br>Fastest way to reach us</p></a></li>
+        <span class="ccard-ico">${I.wa}</span><h3>WhatsApp</h3><p><strong>+27 78 047 4236</strong><br>Fastest way to reach us</p></a></li>
       <li><a class="ccard" href="mailto:bookings@flexi-tours.co.za" data-reveal data-delay="70">
         <span class="ccard-ico b">${I.mail}</span><h3>Email</h3><p><strong>bookings@<wbr>flexi-tours.co.za</strong><br>For quotes and itineraries</p></a></li>
       <li><a class="ccard" href="tel:+27732502549" data-reveal data-delay="140">
-        <span class="ccard-ico">${I.phone}</span><h3>Phone</h3><p><strong>073 250 2549</strong><br>Mon&ndash;Sun, 07:00&ndash;23:30</p></a></li>
+        <span class="ccard-ico">${I.phone}</span><h3>Phone</h3><p><strong>+27 73 250 2549</strong><br>Mon&ndash;Sun, 07:00&ndash;23:30</p></a></li>
       <li><div class="ccard" data-reveal data-delay="210">
         <span class="ccard-ico b">${I.pin}</span><h3>Branches</h3><p><strong>Cape Town</strong> &middot; Milnerton<br><strong>Centurion</strong> &middot; Hennopspark</p></div></li>
     </ul>
@@ -291,7 +301,8 @@ const TOURS = [
     img: "cape-point.webp", alt: "Cape Point lighthouse above the cliffs of the Cape Peninsula",
     name: "Cape Peninsula Sight Seeing Tour", price: "From R1,800", per: "/pp",
     blurb: "Your visit to Cape Town and South Africa is not complete until you go on this tour. Let us make you experience the real beauty of Cape Town and enjoy a glass of wine even as we take you to some of the award winning wine farms.",
-    chips: [[I.clock, "Full day"], [I.hotel, "Hotel pickup"]],
+    stops: "Table Mountain · Twelve Apostles · Chapman's Peak · Cape Point · Boulders penguins",
+    chips: [[I.clock, "Full day"], [I.hotel, "Hotel pickup"], [I.users, "Private or shared"]],
     itin: [
       "Pick up from your hotel or accommodation.",
       "Drive around key historic landmarks in the Cape Town CBD.",
@@ -308,7 +319,8 @@ const TOURS = [
     img: "winelands-tour.webp", alt: "Wine tasting on a Cape Winelands estate near Stellenbosch",
     name: "Cape Winelands Wine Tasting Tour", price: "From R1,500", per: "/pp",
     blurb: "Explore the Cape Winelands, a picturesque region nestled in the heart of South Africa, renowned for its breathtaking landscapes, world-class vineyards and rich cultural heritage. Embark on a captivating journey through three of the most enchanting towns in this wine lover's paradise: Paarl, Franschhoek and Stellenbosch.",
-    chips: [[I.clock, "Full day"], [I.pin, "3 towns"]],
+    stops: "Paarl · Spice Route · Franschhoek · Stellenbosch",
+    chips: [[I.clock, "Full day"], [I.hotel, "Hotel pickup"], [I.users, "Private or shared"]],
     itin: [
       "Pick up from your hotel or accommodation.",
       "Wine tasting at one of the best vineyards in the Paarl Valley.",
@@ -324,7 +336,8 @@ const TOURS = [
     img: "city-tour-table-mountain.webp", alt: "Table Mountain and the Cape Town city bowl seen from a scenic tour route",
     name: "Best of Cape Town Tour", price: "On request", per: "",
     blurb: "The Best of Cape Town Tour offers a comprehensive exploration of this vibrant South African city, known for its stunning natural beauty, rich history and diverse culture.",
-    chips: [[I.clock, "Full day"], [I.check, "Most popular"]],
+    stops: "Camps Bay · Chapman's Peak · Cape Point · Boulders penguins · Simon's Town · Stellenbosch tasting",
+    chips: [[I.clock, "Full day"], [I.hotel, "Hotel pickup"], [I.users, "Private or shared"]],
     itin: [
       "Pick up from your hotel or accommodation.",
       "Drive along Camps Bay and Llandudno to Hout Bay.",
@@ -340,7 +353,8 @@ const TOURS = [
     img: "quad-biking.webp", alt: "Quad biking across the Atlantis sand dunes near Cape Town",
     name: "West Coast Adventure Tour", price: "From R2,500", per: "/pp",
     blurb: "Embark on a thrilling adventure that seamlessly combines the adrenaline-pumping experience of quad biking on the Atlantis Sand Dunes with the sophisticated pleasures of wine tasting at the renowned Durbanville wine farms.",
-    chips: [[I.clock, "1 hr quad biking"], [I.bolt, "Sand boarding"]],
+    stops: "Quad biking on the Atlantis dunes · Optional sandboarding · Optional Durbanville wine tasting",
+    chips: [[I.clock, "1 hr quad biking"], [I.hotel, "Hotel pickup"], [I.users, "Private or shared"]],
     itin: [
       "Pick up from your hotel or accommodation.",
       "Feel the rush as you navigate the Atlantis sand dunes on a quad bike for 1 hour.",
@@ -354,7 +368,8 @@ const TOURS = [
     img: "safari-day-trips.webp", alt: "Game drive vehicle beside elephants on a Big Five reserve near Cape Town",
     name: "Cape Safari Tour — Big 5 Option", price: "On request", per: "",
     blurb: "This safari tour is a two-hour drive from Cape Town and has all of the Big Five: rhino, elephant, lion, buffalo and leopard. Embark on exhilarating game drives through renowned private game reserves. Visitors can also see many other native African species, including giraffe, zebra, hippo, ostrich, eland, wildebeest and springbok.",
-    chips: [[I.clock, "2–3 hr game drive"], [I.check, "Buffet lunch"]],
+    stops: "Lion · Leopard · Elephant · Rhino · Buffalo · Welcome drink &amp; buffet lunch",
+    chips: [[I.clock, "2–3 hr game drive"], [I.hotel, "Hotel pickup"]],
     itin: [
       "Pick up from your hotel or accommodation.",
       "Start: Cape Town CBD at 09h00 and travel for two hours.",
@@ -369,7 +384,8 @@ const TOURS = [
     img: "kruger-tours.webp", alt: "Elephants at a waterhole on a private game reserve near Cape Town",
     name: "Cape Safari Tour — Big 4 Option", price: "On request", per: "",
     blurb: "This safari tour is a 45-minute drive from Cape Town and has four of the Big Five: lion, buffalo, rhino and leopard. Other animals you can see include cheetah, giraffe, zebra, kudu, eland, oryx, blue wildebeest, mountain reedbuck and red hartebeest. The reserve offers guided game drives, bush walks, birdwatching and mountain biking trails, with experienced guides providing insight into the flora, fauna and ecosystems of the area.",
-    chips: [[I.clock, "45 min from CBD"], [I.check, "Extra activities"]],
+    stops: "Lion · Buffalo · Rhino · Leopard · Cheetah · Bush walks &amp; birdwatching",
+    chips: [[I.clock, "45 min from Cape Town"], [I.hotel, "Hotel pickup"]],
     itin: [
       "Pick up from your hotel or accommodation.",
       "Start: Cape Town CBD at 09h00 and travel for 60 minutes.",
@@ -396,12 +412,12 @@ const tourCard = (t, i) => `<li class="card" data-reveal${i % 3 ? ` data-delay="
   </div>
   <div class="card-body">
     <h3>${t.name.replace(" Option", "")}</h3>
-    <p>${t.blurb.length > 190 ? t.blurb.slice(0, 187).trim() + "…" : t.blurb}</p>
+    <p class="card-stops">${t.stops}</p>
     <ul class="card-meta">${t.chips.map(([ic, tx]) => `<li class="chip">${ic}${tx}</li>`).join("")}</ul>
   </div>
   <div class="card-foot">
-    <a class="btn btn-primary btn-sm" href="tours.html#${t.id}">Itinerary</a>
-    <a class="btn btn-ghost btn-sm" href="${waLink(`Hi Flexi Tours, I'd like a quote for the ${t.name}.`)}" target="_blank" rel="noopener">Enquire</a>
+    <a class="btn btn-primary btn-sm" href="tours.html#${t.id}" aria-label="View tour: ${t.name.replace(" Option", "")}">View tour</a>
+    <a class="btn btn-ghost btn-sm" href="${checkLink(t.name)}" target="_blank" rel="noopener" aria-label="WhatsApp to check availability for the ${t.name.replace(" Option", "")}">${I.wa} WhatsApp</a>
   </div>
 </li>`;
 
@@ -477,7 +493,7 @@ pages.push({
         <p class="lead">${t.blurb}</p>
         <ol class="itin">${t.itin.map((s) => `<li>${s}</li>`).join("")}</ol>
         <div class="cta-actions" style="justify-content:flex-start;margin-top:var(--s-4)">
-          <a class="btn btn-primary" href="${waLink(`Hi Flexi Tours, I'd like a quote for the ${t.name}.`)}" target="_blank" rel="noopener">${I.wa} Enquire on WhatsApp</a>
+          <a class="btn btn-primary" href="${checkLink(t.name)}" target="_blank" rel="noopener">${I.wa} Check availability</a>
           <a class="btn btn-ghost" href="mailto:bookings@flexi-tours.co.za?subject=${encodeURIComponent(t.name + " enquiry")}">Email us</a>
         </div>
       </div>
@@ -507,7 +523,7 @@ pages.push({
   <div class="wrap">
     <ul class="stats" data-reveal>
       <li class="stat"><b>R250</b><span>Per person, from &mdash; 6 passengers</span></li>
-      <li class="stat"><b>24<span class="u">/7</span></b><span>Flight-time pickups arranged</span></li>
+      <li class="stat"><b>7</b><span>Days a week, 07:00&ndash;23:30</span></li>
       <li class="stat"><b>5</b><span>Transfer services offered</span></li>
       <li class="stat"><b>4.9<span class="u">★</span></b><span>Google rating from 7 reviews</span></li>
     </ul>
@@ -574,7 +590,7 @@ pages.push({
 <section class="section">
   <div class="wrap">
     <div class="sec-head" data-reveal>
-      <div><p class="label">Why use us</p><h2 class="d-md">Six reasons people rebook</h2></div>
+      <div><p class="label">Why use us</p><h2 class="d-md">Why travel with us</h2></div>
     </div>
     <ol class="steps">
       <li class="step" data-reveal><b>01</b><h3>Reliability</h3><p>Punctual pickups and drop-offs according to the scheduled timetable. If we are delayed for any reason, we communicate with you and resolve it as efficiently as possible.</p></li>
@@ -681,14 +697,14 @@ ${ctaBand("Come and see the Cape with us.")}`,
 pages.push({
   file: "guides.html",
   title: "Cape Town Travel Guides | Flexi Tours",
-  desc: "Practical local advice on Cape Town tours, safaris, the Winelands, Table Mountain, Chapman's Peak, airport transfers and the Garden Route — written by the people who drive them.",
+  desc: "Practical local advice on Cape Town tours, safaris, the Winelands, Table Mountain, Chapman's Peak, airport transfers and the Garden Route.",
   og: "chapmans-peak.webp",
   body: `${phead({
     img: "garden-route.webp",
     alt: "Scenic Garden Route coastline in South Africa",
     label: "Travel guides",
     h1: "Plan your trip properly",
-    lead: "Practical local advice on timing, routes, weather and what things actually cost — written by the people who drive them every week.",
+    lead: "Practical local advice on timing, routes, weather and costs, so you can plan your days in the Cape with confidence.",
     crumb: "Travel Guides",
   })}
 
@@ -708,14 +724,14 @@ ${ctaBand("Read enough? Let us drive.")}`,
 pages.push({
   file: "contact.html",
   title: "Contact Flexi Tours | Cape Town Tours &amp; Transfers",
-  desc: "Get in touch with Flexi Tours for Cape Town tours, safaris, winelands tastings and airport transfers. WhatsApp 078 047 4236, call 073 250 2549 or email bookings@flexi-tours.co.za.",
+  desc: "Get in touch with Flexi Tours for Cape Town tours, safaris, winelands tastings and airport transfers. WhatsApp +27 78 047 4236, call +27 73 250 2549 or email bookings@flexi-tours.co.za.",
   og: "cape-point.webp",
   body: `${phead({
     img: "boulders-penguins.webp",
     alt: "African penguins at Boulders Beach near Simon's Town",
     label: "Contact",
     h1: "Get in touch with us",
-    lead: "Tell us your dates, your group size and where you are staying. We will come back with a route and a firm price — usually the same day.",
+    lead: "Tell us your dates, your group size and where you're staying. We'll reply with a suggested route and a personalised price.",
     crumb: "Contact",
   })}
 
@@ -736,7 +752,7 @@ ${contactCards("Four ways to reach us")}
           <li>${I.check}Any optional extras — tastings, lunches, sandboarding</li>
         </ul>
         <div class="cta-actions" style="justify-content:flex-start;margin-top:var(--s-4)">
-          <a class="btn btn-primary" href="${waLink("Hi Flexi Tours, I'd like to request a quote.\n\nDates:\nNumber of people:\nHotel / pick-up address:\nTour or transfer:")}" target="_blank" rel="noopener">${I.wa} Start on WhatsApp</a>
+          <a class="btn btn-primary" href="${PLAN}" target="_blank" rel="noopener">${I.wa} Plan my trip on WhatsApp</a>
           <a class="btn btn-ghost" href="mailto:bookings@flexi-tours.co.za?subject=Booking%20enquiry&body=Dates%3A%0ANumber%20of%20people%3A%0AHotel%20%2F%20pick-up%20address%3A%0ATour%20or%20transfer%3A">Email us</a>
         </div>
       </div>
@@ -757,7 +773,7 @@ ${contactCards("Four ways to reach us")}
   </div>
 </section>
 
-${ctaBand("We are open seven days a week.")}`,
+${ctaBand()}`,
 });
 
 /* ---------- INDEX (regenerated so nav/footer stay in sync) ---------- */
@@ -774,18 +790,18 @@ const reviewCard = (r, i) => `<li><figure class="review" data-reveal${i % 3 ? ` 
 pages.push({
   file: "index.html",
   title: "Flexi Tours | Cape Town Tours, Safaris, Winelands &amp; Airport Transfers",
-  desc: "Private and shared day tours, safaris, winelands tastings and airport transfers across Cape Town, the Winelands and the Garden Route. Rated 4.9 on Google. Book on WhatsApp.",
+  desc: "Explore Cape Town your way: private and shared tours, safaris, adventures and airport transfers, with local guides, hotel pickup and flexible itineraries. Rated 4.9 on Google.",
   og: "chapmans-peak.webp",
   body: `<section class="hero">
   <div class="hero-media">
     <img src="assets/img/guides/chapmans-peak.webp" alt="Chapman's Peak Drive winding along the Atlantic coastline near Cape Town" width="1536" height="1024" fetchpriority="high">
   </div>
   <div class="wrap hero-inner">
-    <h1 class="d-xl">Cape&nbsp;Town<br><span class="thin">on your terms</span></h1>
-    <p class="lead">Private and shared tours, safaris, winelands tastings and airport transfers — built around your dates, your group and your pace.</p>
+    <h1 class="d-xl hero-title"><span class="thin">Explore</span><br>Cape&nbsp;Town<br><span class="thin">your way</span></h1>
+    <p class="lead">Private tours, shared experiences, safaris, adventures and airport transfers — with local guides and flexible itineraries.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="tours.html">Explore our tours ${I.arrow}</a>
-      <a class="btn btn-ghost" href="${waLink("Hi Flexi Tours, I'd like to request a quote.")}" target="_blank" rel="noopener">Request a quote</a>
+      <a class="btn btn-primary" href="tours.html">Explore tours ${I.arrow}</a>
+      <a class="btn btn-ghost" href="${PLAN}" target="_blank" rel="noopener">${I.wa} Plan my trip</a>
     </div>
   </div>
 </section>
@@ -800,9 +816,9 @@ pages.push({
   <div class="wrap">
     <ul class="stats" data-reveal>
       <li class="stat"><b>4.9<span class="u">★</span></b><span>Google rating from 7 reviews</span></li>
-      <li class="stat"><b>22<span class="u">+</span></b><span>Tours, transfers &amp; activities</span></li>
+      <li class="stat"><b>22<span class="u">+</span></b><span>Ways to explore the Cape</span></li>
       <li class="stat"><b>7</b><span>Days a week, 07:00&ndash;23:30</span></li>
-      <li class="stat"><b>2</b><span>Branches: Cape Town &amp; Centurion</span></li>
+      <li class="stat"><b>Local</b><span>Based in Cape Town</span></li>
     </ul>
   </div>
 </section>
@@ -812,15 +828,16 @@ pages.push({
     <div class="frow">
       <div class="frow-media" data-reveal><img src="assets/img/guides/private-tours.webp" alt="Guests on a private Cape Town tour with a Flexi Tours guide" width="1536" height="1024" loading="lazy"></div>
       <div class="frow-body" data-reveal data-delay="90">
-        <p class="label">Why use us</p>
-        <h2 class="d-md">Not just a drive. A day you will actually remember.</h2>
-        <p class="lead">Welcome to the breathtaking city of Cape Town, where natural wonders and wildlife encounters await at every turn. We handle the routes, the timing and the vehicle — so you spend the day looking out of the window, not at a map.</p>
+        <p class="label">Your local trip planner</p>
+        <h2 class="d-md">Why travellers choose Flexi Tours</h2>
+        <p class="lead">Tell us when you're arriving, where you're staying and what you want to experience. We'll build the day for you.</p>
         <ul class="checks">
-          <li>${I.check}Several years of experience in the events, tours and adventures industry.</li>
-          <li>${I.check}Flexible tour options, from fully private tours to shared group tours.</li>
-          <li>${I.check}Reliable, safe and comfortable vehicles on every tour, for your peace of mind.</li>
-          <li>${I.check}We service all types of clients, including local and international visitors.</li>
-          <li>${I.check}Wi-Fi on board, snacks, water and guides with deep local knowledge.</li>
+          <li>${I.hotel}<span><b>Hotel pickup.</b> We collect you directly from your Cape Town accommodation.</span></li>
+          <li>${I.chat}<span><b>Easy WhatsApp booking.</b> No complicated booking forms.</span></li>
+          <li>${I.van}<span><b>Comfortable vehicles.</b> Air-conditioned, with Wi-Fi, water and snacks on board. Book privately for your own driver and guide.</span></li>
+          <li>${I.pin}<span><b>Local knowledge.</b> We know Cape Town beyond the tourist brochure.</span></li>
+          <li>${I.calendar}<span><b>Flexible itineraries.</b> Change the pace and customise your day.</span></li>
+          <li>${I.tag}<span><b>Clear guide prices.</b> See starting prices for our main tours and transfers before you enquire.</span></li>
         </ul>
         <p style="margin-top:var(--s-4)"><a class="tlink" href="about.html">More about Flexi Tours ${I.arrow}</a></p>
       </div>
@@ -833,7 +850,7 @@ pages.push({
     <div class="sec-head" data-reveal>
       <div>
         <p class="label">Our tours</p>
-        <h2 class="d-md">Cape Town tours &amp; experiences</h2>
+        <h2 class="d-md">Cape Town's <span style="white-space:nowrap">must-do</span> experiences</h2>
         <p class="lead">Table Mountain, Cape Point, the Winelands, Big Five reserves and the Atlantis dunes — run privately for your group or shared with others.</p>
       </div>
       <a class="btn btn-ghost" href="tours.html">All tours &amp; itineraries</a>
@@ -849,7 +866,7 @@ pages.push({
       <div class="frow-body" data-reveal data-delay="90">
         <p class="label label-blue">Transfers &amp; shuttles</p>
         <h2 class="d-md">Land, get in, go.</h2>
-        <p class="lead">Private transfers and shuttle services in and around Cape Town — airport transfers, point-to-point transfers and customised runs, with comfortable vehicles and professional drivers.</p>
+        <p class="lead">Airport to hotel, hotel to airport, and point-to-point transfers such as Cape Town to Stellenbosch or Franschhoek — with comfortable vehicles and professional drivers.</p>
         <ul class="checks">
           <li>${I.check}Bottle of water and free Wi-Fi on board</li>
           <li>${I.check}Air-conditioned vehicle, professional driver</li>
@@ -876,14 +893,17 @@ pages.push({
   <div class="wrap">
     <div class="sec-head" data-reveal>
       <div><p class="label">How it works</p><h2 class="d-md">Booking takes one message</h2>
-      <p class="lead">No accounts, no forms to wrestle with. Tell us what you want and we will put together a formal quote.</p></div>
+      <p class="lead">No accounts, no forms to wrestle with. WhatsApp us and we'll build your itinerary.</p></div>
     </div>
     <ol class="steps">
-      <li class="step" data-reveal><b>STEP 01</b><h3>Tell us your dates</h3><p>Message us on WhatsApp or email with your dates, group size and where you are staying.</p></li>
+      <li class="step" data-reveal><b>STEP 01</b><h3>Tell us about your trip</h3><p>Your dates, how many of you are travelling, where you're staying and what you'd like to see.</p></li>
       <li class="step" data-reveal data-delay="80"><b>STEP 02</b><h3>We build the day</h3><p>We suggest a route and pace that fits — private or shared, with the optional extras you want.</p></li>
-      <li class="step" data-reveal data-delay="160"><b>STEP 03</b><h3>Get a formal quote</h3><p>A firm price for your group, including vehicle, driver and everything agreed. No surprises.</p></li>
+      <li class="step" data-reveal data-delay="160"><b>STEP 03</b><h3>Get a personalised price</h3><p>A firm price for your group, including the vehicle, driver and everything agreed.</p></li>
       <li class="step" data-reveal data-delay="240"><b>STEP 04</b><h3>We collect you</h3><p>We pick you up at your hotel or accommodation and bring you back at the end of the day.</p></li>
     </ol>
+    <div class="cta-actions" style="justify-content:flex-start;margin-top:var(--s-5)" data-reveal>
+      <a class="btn btn-primary" href="${PLAN}" target="_blank" rel="noopener">${I.wa} Plan my trip</a>
+    </div>
   </div>
 </section>
 
@@ -916,7 +936,7 @@ pages.push({
   <div class="wrap">
     <div class="sec-head" data-reveal>
       <div><p class="label">Travel guides</p><h2 class="d-md">Plan your trip properly</h2>
-      <p class="lead">Practical local advice on timing, routes, weather and what things actually cost — written by the people who drive them every week.</p></div>
+      <p class="lead">Practical local advice on timing, routes, weather and costs, so you can plan your days in the Cape with confidence.</p></div>
       <a class="btn btn-ghost" href="guides.html">All travel guides</a>
     </div>
     <ul class="grid-guides">${GUIDES.slice(0, 6).map(guideCard).join("\n")}</ul>
@@ -962,10 +982,10 @@ for (const a of ARTICLES) {
 
     <div class="post-cta">
       <div>
-        <h2>Planning this trip?</h2>
-        <p>Tell us your dates and we will put a day together for you.</p>
+        <h2>Planning your Cape Town trip?</h2>
+        <p>Let Flexi Tours build your itinerary. Tell us your dates, group size and where you're staying.</p>
       </div>
-      <a class="btn btn-primary" href="${waLink(`Hi Flexi Tours, I read your guide "${a.title}" and would like a quote.`)}" target="_blank" rel="noopener">${I.wa} Get a quote</a>
+      <a class="btn btn-primary" href="${waLink(`Hi Flexi Tours, I read your guide "${a.title}" and I'd like help planning my trip.\n\nDates:\nNumber of people:\nHotel/location:\nTours I'm interested in:`)}" target="_blank" rel="noopener">${I.wa} Plan my trip</a>
     </div>
   </div>
 </article>
