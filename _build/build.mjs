@@ -66,6 +66,7 @@ const I = {
   calendar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>`,
   tag: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8Z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>`,
   chat: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.2A8.5 8.5 0 1 1 21 11.5Z"/></svg>`,
+  globe: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.5 9h17M3.5 15h17"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18Z"/></svg>`,
   fb: `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1Z"/></svg>`,
   ig: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>`,
 };
@@ -170,6 +171,7 @@ const LD = JSON.stringify({
   email: "bookings@flexi-tours.co.za",
   telephone: "+27780474236",
   priceRange: "R250 - R2500",
+  availableLanguage: ["English", "French", "Spanish", "Portuguese"],
   areaServed: ["Cape Town", "Stellenbosch", "Franschhoek", "Paarl", "Constantia", "Durbanville", "Garden Route", "Western Cape"],
   aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "7" },
   openingHoursSpecification: {
@@ -413,13 +415,72 @@ const tourCard = (t, i) => `<li class="card" data-reveal${i % 3 ? ` data-delay="
   <div class="card-body">
     <h3>${t.name.replace(" Option", "")}</h3>
     <p class="card-stops">${t.stops}</p>
-    <ul class="card-meta">${t.chips.map(([ic, tx]) => `<li class="chip">${ic}${tx}</li>`).join("")}</ul>
+    <ul class="card-meta">${t.chips.concat([[I.globe, "EN · FR · ES · PT"]]).map(([ic, tx]) => `<li class="chip">${ic}${tx}</li>`).join("")}</ul>
   </div>
   <div class="card-foot">
     <a class="btn btn-primary btn-sm" href="tours.html#${t.id}" aria-label="View tour: ${t.name.replace(" Option", "")}">View tour</a>
     <a class="btn btn-ghost btn-sm" href="${checkLink(t.name)}" target="_blank" rel="noopener" aria-label="WhatsApp to check availability for the ${t.name.replace(" Option", "")}">${I.wa} WhatsApp</a>
   </div>
 </li>`;
+
+/* Multi-day packages, put together from the tours above. No package price is
+   shown: we quote the whole trip per group. */
+const PACKAGES = [
+  {
+    name: "The Classic Cape", len: "3 days",
+    img: "cape-point.webp", alt: "Cape Point and the cliffs of the Cape Peninsula",
+    blurb: "The three days most visitors come to Cape Town for: the Peninsula, the Winelands and a Big Five reserve.",
+    days: [
+      ["Day 1", "Cape Peninsula &amp; Boulders penguins", "cape-peninsula"],
+      ["Day 2", "Cape Winelands wine tasting", "winelands"],
+      ["Day 3", "Big 5 safari", "safari-big5"],
+    ],
+  },
+  {
+    name: "Adventure &amp; Wine", len: "2 days",
+    img: "quad-biking.webp", alt: "Quad biking across the Atlantis sand dunes near Cape Town",
+    blurb: "Quad biking and sandboarding on the Atlantis dunes, then a slower day tasting through the Winelands.",
+    days: [
+      ["Day 1", "Quad biking &amp; sandboarding", "west-coast"],
+      ["Day 2", "Cape Winelands wine tasting", "winelands"],
+    ],
+  },
+  {
+    name: "Sights &amp; Safari", len: "2 days",
+    img: "safari-day-trips.webp", alt: "Elephants on a private game reserve near Cape Town",
+    blurb: "The city, the coast and the penguins on day one, then a game drive 45 minutes from Cape Town.",
+    days: [
+      ["Day 1", "Best of Cape Town", "best-of-cape-town"],
+      ["Day 2", "Big 4 safari", "safari-big4"],
+    ],
+  },
+];
+
+const plain = (s) => s.replace(/&amp;/g, "&");
+
+const packageCard = (p, i) => `<li class="pkg" data-reveal${i % 3 ? ` data-delay="${(i % 3) * 80}"` : ""}>
+  <div class="pkg-media">
+    <img src="assets/img/guides/${p.img}" alt="${p.alt}" width="1536" height="1024" loading="lazy">
+    <span class="card-tag">${I.calendar}${p.len}</span>
+  </div>
+  <div class="pkg-body">
+    <h3>${p.name}</h3>
+    <p>${p.blurb}</p>
+    <ol class="pkg-days">${p.days.map(([d, t, id]) => `<li><b>${d}</b><a href="tours.html#${id}">${t}</a></li>`).join("")}</ol>
+    <p class="pkg-note">Airport transfers can be added. We quote the whole trip for your dates and group.</p>
+  </div>
+  <a class="btn btn-primary btn-sm" href="${waLink(`Hi Flexi Tours, I'd like a price for this package: ${plain(p.name)} (${p.days.map(([, t]) => plain(t)).join(", ")}).\n\nDates:\nNumber of people:\nHotel/location:`)}" target="_blank" rel="noopener" aria-label="Ask for a price: ${plain(p.name)}">${I.wa} Ask for a price</a>
+</li>`;
+
+const packagesSection = () => `<section class="section" id="packages">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <div><p class="label">Packages</p><h2 class="d-md">Make it a multi-day trip</h2>
+      <p class="lead">Put our tours together into one trip and we arrange every pickup, guided in English, French, Spanish or Portuguese. Swap any day for another tour to suit you.</p></div>
+    </div>
+    <ul class="grid-pkgs">${PACKAGES.map(packageCard).join("\n")}</ul>
+  </div>
+</section>`;
 
 const guideCard = (g, i) => `<li><a class="guide" href="${guideHref(g[0])}" data-reveal${i % 3 ? ` data-delay="${(i % 3) * 80}"` : ""}>
   <div class="guide-media"><img src="assets/img/guides/${g[4]}" alt="" width="1536" height="1024" loading="lazy"></div>
@@ -435,7 +496,7 @@ const pages = [];
 pages.push({
   file: "tours.html",
   title: "Tours &amp; Experiences | Flexi Tours Cape Town",
-  desc: "Full itineraries and guide prices for our Cape Peninsula, Winelands, Best of Cape Town, West Coast Adventure and Big 5 / Big 4 safari tours from Cape Town.",
+  desc: "Full itineraries, guide prices and multi-day packages for our Cape Peninsula, Winelands, Best of Cape Town, West Coast Adventure and Big 5 / Big 4 safari tours. Guided in English, French, Spanish and Portuguese.",
   og: "cape-point.webp",
   body: `${phead({
     img: "sightseeing.webp",
@@ -450,11 +511,13 @@ pages.push({
   <div class="wrap">
     <div class="sec-head" data-reveal>
       <div><p class="label">Choose your day</p><h2 class="d-md">Six ways to see the Cape</h2>
-      <p class="lead">Each one runs privately for your group, or shared with others if you would rather keep the cost down.</p></div>
+      <p class="lead">Each one runs privately for your group, or shared with others if you would rather keep the cost down. Guided in English, French, Spanish or Portuguese.</p></div>
     </div>
     <ul class="grid-tours">${TOURS.map(tourCard).join("\n")}</ul>
   </div>
 </section>
+
+${packagesSection()}
 
 <section class="section-sm">
   <div class="wrap">
@@ -663,6 +726,7 @@ pages.push({
           <li>${I.wifi}Wi-Fi on board so you can share the day as it happens</li>
           <li>${I.check}Snacks and bottled water on every tour</li>
           <li>${I.shield}Tour guides with deep local knowledge</li>
+          <li>${I.globe}Guides available in English, French, Spanish and Portuguese</li>
           <li>${I.van}Reliable, safe and comfortable vehicles</li>
         </ul>
       </div>
@@ -790,7 +854,7 @@ const reviewCard = (r, i) => `<li><figure class="review" data-reveal${i % 3 ? ` 
 pages.push({
   file: "index.html",
   title: "Flexi Tours | Cape Town Tours, Safaris, Winelands &amp; Airport Transfers",
-  desc: "Explore Cape Town your way: private and shared tours, safaris, adventures and airport transfers, with local guides, hotel pickup and flexible itineraries. Rated 4.9 on Google.",
+  desc: "Explore Cape Town your way: private and shared tours, safaris, adventures, multi-day packages and airport transfers. Guides in English, French, Spanish and Portuguese. Hotel pickup. Rated 4.9 on Google.",
   og: "chapmans-peak.webp",
   body: `<section class="hero">
   <div class="hero-media">
@@ -803,6 +867,7 @@ pages.push({
       <a class="btn btn-primary" href="tours.html">Explore tours ${I.arrow}</a>
       <a class="btn btn-ghost" href="${PLAN}" target="_blank" rel="noopener">${I.wa} Plan my trip</a>
     </div>
+    <p class="hero-langs">Guided in English &middot; French &middot; Spanish &middot; Portuguese</p>
   </div>
 </section>
 
@@ -836,6 +901,7 @@ pages.push({
           <li>${I.chat}<span><b>Easy WhatsApp booking.</b> No complicated booking forms.</span></li>
           <li>${I.van}<span><b>Comfortable vehicles.</b> Air-conditioned, with Wi-Fi, water and snacks on board. Book privately for your own driver and guide.</span></li>
           <li>${I.pin}<span><b>Local knowledge.</b> We know Cape Town beyond the tourist brochure.</span></li>
+          <li>${I.globe}<span><b>Guides in your language.</b> Tours in English, French, Spanish and Portuguese.</span></li>
           <li>${I.calendar}<span><b>Flexible itineraries.</b> Change the pace and customise your day.</span></li>
           <li>${I.tag}<span><b>Clear guide prices.</b> See starting prices for our main tours and transfers before you enquire.</span></li>
         </ul>
@@ -858,6 +924,8 @@ pages.push({
     <ul class="grid-tours">${TOURS.map(tourCard).join("\n")}</ul>
   </div>
 </section>
+
+${packagesSection()}
 
 <section class="section" id="transfers">
   <div class="wrap">
