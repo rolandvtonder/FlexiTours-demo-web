@@ -77,7 +77,7 @@
 
     // Close if resized up to desktop while open
     window.addEventListener("resize", function () {
-      if (window.innerWidth >= 1000 && drawer.classList.contains("is-open")) closeDrawer();
+      if (window.innerWidth >= 1200 && drawer.classList.contains("is-open")) closeDrawer();
     });
   }
 

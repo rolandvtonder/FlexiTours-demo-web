@@ -33,7 +33,7 @@ const REVIEWS = [
 ];
 
 const FACEBOOK = "https://www.facebook.com/flexitours/";
-const INSTAGRAM = "https://www.instagram.com/flexi.tours/";
+const INSTAGRAM = "https://www.instagram.com/flexi_tours_za/";
 
 /* ---------------- shared bits ---------------- */
 const WA = "https://wa.me/27780474236";
@@ -76,6 +76,7 @@ const stars5 = `<span class="stars" aria-hidden="true">${I.star.repeat(5)}</span
 const NAV = [
   ["index.html", "Home"],
   ["tours.html", "Tours"],
+  ["packages.html", "Packages"],
   ["transfers.html", "Transfers"],
   ["about.html", "About"],
   ["guides.html", "Travel Guides"],
@@ -89,11 +90,13 @@ const topbar = () => `<div class="topbar">
     <a href="${WA}" target="_blank" rel="noopener">${I.wa} WhatsApp +27 78 047 4236</a>
     <span class="sep" aria-hidden="true">·</span>
     <a href="tel:+27732502549">${I.phone} +27 73 250 2549</a>
+    <span class="sep" aria-hidden="true">·</span>
+    <a href="${INSTAGRAM}" target="_blank" rel="noopener" aria-label="Flexi Tours on Instagram, @flexi_tours_za">${I.ig} @flexi_tours_za</a>
   </div>
 </div>`;
 
-/* An article page highlights "Travel Guides" in the nav. */
-const navKey = (file) => (file.startsWith("guide-") ? "guides.html" : file);
+/* Sub-pages highlight their parent in the nav. */
+const navKey = (file) => (file.startsWith("guide-") ? "guides.html" : file === "garden-route.html" ? "packages.html" : file);
 
 const header = (rawPage) => ((page) => `<header class="nav">
   <div class="wrap">
@@ -170,7 +173,7 @@ const LD = JSON.stringify({
   logo: "https://www.flexi-tours.co.za/images/logo.png",
   email: "bookings@flexi-tours.co.za",
   telephone: "+27780474236",
-  priceRange: "R250 - R2500",
+  priceRange: "R250 - R9500",
   availableLanguage: ["English", "French", "Spanish", "Portuguese"],
   areaServed: ["Cape Town", "Stellenbosch", "Franschhoek", "Paarl", "Constantia", "Durbanville", "Garden Route", "Western Cape"],
   aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "7" },
@@ -253,24 +256,24 @@ ${footer()}
 `;
 
 /* ---------------- reusable blocks ---------------- */
-const phead = ({ img, alt, label, h1, lead, crumb }) => `<section class="phead">
+const phead = ({ img, alt, label, h1, lead, crumb, parent }) => `<section class="phead">
   <div class="phead-media"><img src="assets/img/guides/${img}" alt="${alt}" width="1536" height="1024" fetchpriority="high"></div>
   <div class="wrap phead-inner">
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a>${I.chev}<span>${crumb}</span></nav>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a>${I.chev}${parent ? `<a href="${parent[0]}">${parent[1]}</a>${I.chev}` : ""}<span>${crumb}</span></nav>
     <p class="label" style="margin-top:var(--s-3)">${label}</p>
     <h1 class="d-lg">${h1}</h1>
     <p class="lead">${lead}</p>
   </div>
 </section>`;
 
-const ctaBand = (heading = "Coming to Cape Town?") => `<section class="section-sm">
+const ctaBand = (heading = "Coming to Cape Town?", o = {}) => `<section class="section-sm">
   <div class="wrap">
     <div class="cta" data-reveal>
       <p class="label" style="justify-content:center">Plan your trip</p>
       <h2 class="d-lg">${heading}</h2>
-      <p class="lead">Tell us your dates. We'll handle the rest.</p>
+      <p class="lead">${o.lead || "Tell us your dates. We'll handle the rest."}</p>
       <div class="cta-actions">
-        <a class="btn btn-primary" href="${PLAN}" target="_blank" rel="noopener">${I.wa} Plan my trip</a>
+        <a class="btn btn-primary" href="${o.href || PLAN}" target="_blank" rel="noopener">${I.wa} ${o.button || "Plan my trip"}</a>
         <a class="btn btn-ghost" href="mailto:bookings@flexi-tours.co.za?subject=Tour%20enquiry">Email bookings</a>
       </div>
       <p class="small muted" style="margin-top:var(--s-3)">Open seven days a week, 07:00&ndash;23:30</p>
@@ -423,62 +426,117 @@ const tourCard = (t, i) => `<li class="card" data-reveal${i % 3 ? ` data-delay="
   </div>
 </li>`;
 
-/* Multi-day packages, put together from the tours above. No package price is
-   shown: we quote the whole trip per group. */
+/* Holiday packages supplied by the client (September 2026). Prices are the
+   client's "from" prices per person. */
+const GR_DAYS = [
+  { n: 1, title: "Cape Town → Mossel Bay", text: "Depart Cape Town and travel along the scenic coast.",
+    hl: ["Mossel Bay", "Coastal scenery", "Beaches"] },
+  { n: 2, title: "Wilderness &amp; Knysna", text: "Discover the beautiful Garden Route coastline and the famous town of Knysna.",
+    hl: ["Wilderness", "Knysna Lagoon", "Knysna Waterfront"] },
+  { n: 3, title: "Tsitsikamma Adventure", text: "A day of forests, ocean views and adventure.",
+    hl: ["Tsitsikamma National Park", "Storms River", "Suspension Bridge"], opt: "Zipline or other adventure activities" },
+  { n: 4, title: "Plettenberg Bay &amp; Wildlife", text: "Enjoy beautiful beaches and get close to South Africa's wildlife.",
+    hl: ["Plettenberg Bay", "Beaches", "Wildlife experience"] },
+  { n: 5, title: "Oudtshoorn → Cape Town", text: "Experience the unique Klein Karoo before returning to Cape Town.",
+    hl: ["Oudtshoorn", "Cango Caves", "Scenic Route"] },
+];
+
+const GR_INCLUDED = ["Private comfortable transport", "Professional local guide", "Hotel pickup and drop-off",
+  "4 nights accommodation", "Garden Route sightseeing", "Flexible itinerary", "Bottled water"];
+
 const PACKAGES = [
   {
-    name: "The Classic Cape", len: "3 days",
-    img: "cape-point.webp", alt: "Cape Point and the cliffs of the Cape Peninsula",
-    blurb: "The three days most visitors come to Cape Town for: the Peninsula, the Winelands and a Big Five reserve.",
-    days: [
-      ["Day 1", "Cape Peninsula &amp; Boulders penguins", "cape-peninsula"],
-      ["Day 2", "Cape Winelands wine tasting", "winelands"],
-      ["Day 3", "Big 5 safari", "safari-big5"],
+    name: "Cape Town 3-Day Experience", len: "3 days", price: "From R4,500", per: "/pp",
+    img: "sightseeing.webp", alt: "Visitors on an open-top tour looking out over Table Mountain and Lion's Head",
+    rows: [
+      ["Day 1", "Cape Peninsula, penguins &amp; Cape Point", "tours.html#cape-peninsula"],
+      ["Day 2", "Table Mountain &amp; Cape Town"],
+      ["Day 3", "Winelands", "tours.html#winelands"],
     ],
+    note: "WhatsApp us to customise your trip.",
   },
   {
-    name: "Adventure &amp; Wine", len: "2 days",
-    img: "quad-biking.webp", alt: "Quad biking across the Atlantis sand dunes near Cape Town",
-    blurb: "Quad biking and sandboarding on the Atlantis dunes, then a slower day tasting through the Winelands.",
-    days: [
-      ["Day 1", "Quad biking &amp; sandboarding", "west-coast"],
-      ["Day 2", "Cape Winelands wine tasting", "winelands"],
+    name: "Cape Town Adventure", len: "Adventure", tagIcon: I.bolt, price: "From R4,200", per: "/pp",
+    img: "sandboarding.webp", alt: "Sandboarding down the white Atlantis dunes with Table Mountain in the distance",
+    rows: [
+      ["", "Cape Peninsula", "tours.html#cape-peninsula"],
+      ["", "Atlantis quad biking", "tours.html#west-coast"],
+      ["", "Sandboarding", "tours.html#west-coast"],
+      ["", "Winelands"],
     ],
+    note: "WhatsApp us to customise your trip.",
   },
   {
-    name: "Sights &amp; Safari", len: "2 days",
-    img: "safari-day-trips.webp", alt: "Elephants on a private game reserve near Cape Town",
-    blurb: "The city, the coast and the penguins on day one, then a game drive 45 minutes from Cape Town.",
-    days: [
-      ["Day 1", "Best of Cape Town", "best-of-cape-town"],
-      ["Day 2", "Big 4 safari", "safari-big4"],
-    ],
+    name: "5-Day Garden Route Adventure", len: "5 days", price: "From R9,500", per: "/pp",
+    img: "garden-route.webp", alt: "Travellers looking out over the Garden Route coastline",
+    rows: GR_DAYS.map((d) => [`Day ${d.n}`, d.title, `garden-route.html#day-${d.n}`]),
+    note: "Includes 4 nights accommodation, a private guide and transport.",
+    page: "garden-route.html",
   },
 ];
 
 const plain = (s) => s.replace(/&amp;/g, "&");
+const pkgMsg = (p) => waLink(`Hi Flexi Tours, I'm interested in the ${plain(p.name)} package.\n\nDates:\nNumber of travellers:\nHotel/location:`);
 
-const packageCard = (p, i) => `<li class="pkg" data-reveal${i % 3 ? ` data-delay="${(i % 3) * 80}"` : ""}>
+const packageCard = (p, i) => {
+  const cta = p.page ? "WhatsApp" : "Customise this trip";
+  return `<li class="pkg" data-reveal${i % 3 ? ` data-delay="${(i % 3) * 80}"` : ""}>
   <div class="pkg-media">
     <img src="assets/img/guides/${p.img}" alt="${p.alt}" width="1536" height="1024" loading="lazy">
-    <span class="card-tag">${I.calendar}${p.len}</span>
+    <span class="card-tag">${p.tagIcon || I.calendar}${p.len}</span>
+    <span class="card-price">${p.price} <small>${p.per}</small></span>
   </div>
   <div class="pkg-body">
-    <h3>${p.name}</h3>
-    <p>${p.blurb}</p>
-    <ol class="pkg-days">${p.days.map(([d, t, id]) => `<li><b>${d}</b><a href="tours.html#${id}">${t}</a></li>`).join("")}</ol>
-    <p class="pkg-note">Airport transfers can be added. We quote the whole trip for your dates and group.</p>
+    <h3>${p.page ? `<a href="${p.page}">${p.name}</a>` : p.name}</h3>
+    <ol class="pkg-days">${p.rows.map(([d, t, href]) => `<li${d ? "" : ' class="nolabel"'}>${d ? `<b>${d}</b>` : ""}${href ? `<a href="${href}">${t}</a>` : `<span>${t}</span>`}</li>`).join("")}</ol>
+    <p class="pkg-note">${p.note}</p>
   </div>
-  <a class="btn btn-primary btn-sm" href="${waLink(`Hi Flexi Tours, I'd like a price for this package: ${plain(p.name)} (${p.days.map(([, t]) => plain(t)).join(", ")}).\n\nDates:\nNumber of people:\nHotel/location:`)}" target="_blank" rel="noopener" aria-label="Ask for a price: ${plain(p.name)}">${I.wa} Ask for a price</a>
+  <div class="pkg-foot">
+    ${p.page ? `<a class="btn btn-ghost btn-sm" href="${p.page}" aria-label="Full itinerary: ${plain(p.name)}">Full itinerary</a>` : ""}
+    <a class="btn btn-primary btn-sm" href="${pkgMsg(p)}" target="_blank" rel="noopener" aria-label="${cta}: ${plain(p.name)}">${I.wa} ${cta}</a>
+  </div>
 </li>`;
+};
 
-const packagesSection = () => `<section class="section" id="packages">
+const packagesSection = ({
+  link = true,
+  label = "Holiday packages",
+  title = "Book the whole trip",
+  lead = "Multi-day trips with hotel pickup, guided in English, French, Spanish or Portuguese. Every package can be customised to suit you.",
+} = {}) => `<section class="section" id="packages">
   <div class="wrap">
     <div class="sec-head" data-reveal>
-      <div><p class="label">Packages</p><h2 class="d-md">Make it a multi-day trip</h2>
-      <p class="lead">Put our tours together into one trip and we arrange every pickup, guided in English, French, Spanish or Portuguese. Swap any day for another tour to suit you.</p></div>
+      <div><p class="label">${label}</p><h2 class="d-md">${title}</h2>
+      <p class="lead">${lead}</p></div>
+      ${link ? `<a class="btn btn-ghost" href="packages.html">All packages</a>` : ""}
     </div>
     <ul class="grid-pkgs">${PACKAGES.map(packageCard).join("\n")}</ul>
+  </div>
+</section>`;
+
+/* Signature day out: West Coast Adventure. Sandboarding and wine tasting are
+   optional extras on that tour, so they are labelled as such. */
+const adventureFeature = () => `<section class="section-sm" id="adventure">
+  <div class="wrap">
+    <div class="feature" data-reveal>
+      <div class="feature-media"><img src="assets/img/guides/quad-biking.webp" alt="Quad bikes crossing the white Atlantis sand dunes with Table Mountain behind" width="1536" height="1024" loading="lazy"></div>
+      <div class="feature-body">
+        <p class="label">Adventure + wine</p>
+        <h2 class="d-lg">Quad bike the Atlantis dunes</h2>
+        <p class="lead">Race across the spectacular white sand dunes, try sandboarding and finish your day with Cape Winelands scenery.</p>
+        <ul class="feature-facts">
+          <li class="chip">${I.clock}1 hr quad biking</li>
+          <li class="chip">${I.bolt}Sandboarding (optional)</li>
+          <li class="chip">${I.wine}Wine tasting (optional)</li>
+          <li class="chip">${I.hotel}Hotel pickup</li>
+        </ul>
+        <p class="feature-price">From <b>R2,500</b> per person</p>
+        <div class="cta-actions" style="justify-content:flex-start">
+          <a class="btn btn-primary" href="${checkLink("West Coast Adventure Tour")}" target="_blank" rel="noopener">${I.wa} Book the adventure</a>
+          <a class="btn btn-ghost" href="tours.html#west-coast">See the full day</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>`;
 
@@ -840,6 +898,97 @@ ${contactCards("Four ways to reach us")}
 ${ctaBand()}`,
 });
 
+/* ---------- PACKAGES ---------- */
+pages.push({
+  file: "packages.html",
+  title: "Holiday Packages | Flexi Tours Cape Town",
+  desc: "Multi-day holiday packages from Cape Town: the Cape Town 3-Day Experience, the Cape Town Adventure and the 5-Day Garden Route Adventure. Guided in English, French, Spanish and Portuguese.",
+  og: "garden-route.webp",
+  body: `${phead({
+    img: "boulders-penguins.webp",
+    alt: "African penguins on Boulders Beach with Table Mountain in the distance",
+    label: "Holiday packages",
+    h1: "Book the whole trip, not just a day",
+    lead: "Multi-day packages built from our tours, from three days in Cape Town to five days on the Garden Route. Hotel pickup, local guides in English, French, Spanish or Portuguese, and every package can be customised.",
+    crumb: "Packages",
+  })}
+
+${packagesSection({ link: false, label: "Our packages", title: "Choose your trip", lead: "Prices are per person and vary with your dates, group size and accommodation. WhatsApp us and we'll tailor any package to you." })}
+
+${adventureFeature()}
+
+${ctaBand("Want a different combination?", { lead: "Tell us which tours you'd like and your dates. We'll put your package together and quote the whole trip." })}`,
+});
+
+/* ---------- GARDEN ROUTE (5-day package) ---------- */
+const GR = PACKAGES.find((p) => p.page === "garden-route.html");
+pages.push({
+  file: "garden-route.html",
+  title: "5-Day Garden Route Adventure | Flexi Tours",
+  desc: "A 5-day Garden Route tour from Cape Town: Mossel Bay, Wilderness, Knysna, Tsitsikamma, Plettenberg Bay and Oudtshoorn. Private guide, transport and 4 nights accommodation. From R9,500 per person.",
+  og: "garden-route.webp",
+  body: `${phead({
+    img: "garden-route.webp",
+    alt: "Travellers looking out over the Garden Route coastline",
+    label: "5-day package",
+    h1: "5-Day Garden Route Adventure",
+    lead: "Cape Town → Garden Route → Cape Town. 5 days of incredible scenery, wildlife, beaches, forests and adventure.",
+    crumb: "5-Day Garden Route Adventure",
+    parent: ["packages.html", "Packages"],
+  })}
+
+<section class="section">
+  <div class="wrap">
+    <div class="frow">
+      <div class="frow-media" data-reveal><img src="assets/img/guides/garden-route-private.webp" alt="A private tour vehicle on a coastal road on the Garden Route" width="1536" height="1024" loading="lazy"></div>
+      <div class="frow-body" data-reveal data-delay="90">
+        <p class="label">The trip</p>
+        <h2 class="d-md">You enjoy the journey. We handle the rest.</h2>
+        <p class="lead">Explore South Africa's beautiful Garden Route with a private guide and comfortable transport. We take care of the driving, accommodation and itinerary — you enjoy the journey.</p>
+        <p class="feature-price">From <b>R9,500</b> per person</p>
+        <p class="small muted">Price varies depending on accommodation, group size and activities.</p>
+        <div class="cta-actions" style="justify-content:flex-start;margin-top:var(--s-4)">
+          <a class="btn btn-primary" href="${pkgMsg(GR)}" target="_blank" rel="noopener">${I.wa} WhatsApp Flexi Tours</a>
+          <a class="btn btn-ghost" href="#itinerary">See the 5 days</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-sm" id="itinerary">
+  <div class="wrap">
+    <div class="sec-head" data-reveal><div><p class="label">Itinerary</p><h2 class="d-md">Day by day</h2></div></div>
+    <ol class="days">${GR_DAYS.map((d) => `<li class="day" id="day-${d.n}" data-reveal>
+      <div class="day-num">Day <b>${d.n}</b></div>
+      <div>
+        <h3>${d.title}</h3>
+        <p>${d.text}</p>
+        <ul class="card-meta">${d.hl.map((h) => `<li class="chip">${I.pin}${h}</li>`).join("")}</ul>
+        ${d.opt ? `<p class="day-opt"><b>Optional:</b> ${d.opt}</p>` : ""}
+      </div>
+    </li>`).join("\n    ")}</ol>
+  </div>
+</section>
+
+<section class="section-sm">
+  <div class="wrap">
+    <div class="sec-head" data-reveal><div><p class="label">What's included</p><h2 class="d-md">Everything taken care of</h2>
+      <p class="lead">Activities and meals can be added to suit your budget and interests.</p></div></div>
+    <ul class="svc-grid" data-reveal>${GR_INCLUDED.map((x) => `<li class="svc">${I.check}${x}</li>`).join("")}</ul>
+  </div>
+</section>
+
+<section class="section-sm">
+  <div class="wrap">
+    <div class="sec-head" data-reveal><div><p class="label">Travel guides</p><h2 class="d-md">Read before you go</h2></div></div>
+    <ul class="grid-guides">${GUIDES.filter((g) => g[0].includes("garden-route")).map(guideCard).join("\n")}</ul>
+  </div>
+</section>
+
+${ctaBand("Ready for the Garden Route?", { lead: "Tell us your dates and number of travellers. We'll build your 5-day Garden Route experience.", href: pkgMsg(GR), button: "WhatsApp Flexi Tours" })}`,
+});
+
 /* ---------- INDEX (regenerated so nav/footer stay in sync) ---------- */
 const initials = (n) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
 
@@ -926,6 +1075,8 @@ pages.push({
 </section>
 
 ${packagesSection()}
+
+${adventureFeature()}
 
 <section class="section" id="transfers">
   <div class="wrap">

@@ -184,16 +184,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .nav-logo img{height:26px;width:auto}
 @media(min-width:768px){.nav-logo img{height:30px}}
 .nav-links{display:none;align-items:center;gap:4px}
-@media(min-width:1000px){.nav-links{display:flex}}
+@media(min-width:1200px){.nav-links{display:flex}}
 .nav-links a{
-  display:inline-flex;align-items:center;min-height:44px;padding:0 16px;
+  display:inline-flex;align-items:center;min-height:44px;padding:0 12px;white-space:nowrap;
   border-radius:var(--r-pill);font-size:.9rem;font-weight:500;color:var(--t-mid);
   transition:color var(--d-fast),background var(--d-fast);
 }
 .nav-links a:hover{color:var(--t-hi);background:rgba(255,255,255,.07)}
 .nav-links a[aria-current="page"]{color:var(--t-hi);background:rgba(255,255,255,.10);font-weight:600}
 .nav-cta{display:none}
-@media(min-width:1000px){.nav-cta{display:inline-flex}}
+@media(min-width:1200px){.nav-cta{display:inline-flex}}
 
 /* Burger */
 .burger{
@@ -203,7 +203,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   color:var(--t-hi);flex:none;
 }
 .burger:hover{background:rgba(255,255,255,.14)}
-@media(min-width:1000px){.burger{display:none}}
+@media(min-width:1200px){.burger{display:none}}
 .burger span{display:block;width:19px;height:1.5px;background:currentColor;border-radius:2px;transition:transform var(--d-mid) var(--e-out),opacity var(--d-fast)}
 .burger span+span{margin-top:5px}
 .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
@@ -358,6 +358,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .pkg:hover .pkg-media img{transform:scale(1.04)}
 .pkg-body{display:flex;flex-direction:column;gap:12px;flex:1;padding:var(--s-3)}
 .pkg-body h3{font-size:1.3rem;letter-spacing:-.03em}
+.pkg-body h3 a{transition:color var(--d-fast)}
+.pkg-body h3 a:hover{color:var(--brand)}
 .pkg-body>p{font-size:.9375rem;color:var(--t-lo);line-height:1.6}
 .pkg-days li{
   display:flex;gap:12px;padding-block:9px;
@@ -375,7 +377,52 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .pkg-days a:hover{color:var(--t-hi);text-decoration-color:var(--brand)}
 .pkg-note{margin-top:auto;font-size:.8125rem;color:var(--t-lo);line-height:1.5}
-.pkg>.btn{margin:0 var(--s-3) var(--s-3)}
+.pkg-days li.nolabel::before{content:"";flex:none;width:6px;height:6px;margin-top:.55em;border-radius:50%;background:var(--brand)}
+.pkg-foot{display:flex;gap:10px;padding:0 var(--s-3) var(--s-3)}
+.pkg-foot .btn{flex:1}
+
+/* ---------- 11c. Signature adventure feature ---------- */
+.feature{
+  position:relative;isolation:isolate;overflow:hidden;
+  display:flex;align-items:flex-end;
+  min-height:clamp(520px,56vw,640px);
+  border-radius:var(--r-xl);border:1px solid var(--line-2);
+  background:var(--ink-800);
+}
+.feature-media{position:absolute;inset:0;z-index:-2}
+.feature-media img{width:100%;height:100%;object-fit:cover}
+.feature::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg,rgba(6,18,23,.96) 0%,rgba(6,18,23,.9) 52%,rgba(6,18,23,.35) 78%,rgba(6,18,23,.05) 100%);
+}
+.feature-body{padding:clamp(28px,5vw,64px);max-width:600px}
+.feature-body h2{margin-block:var(--s-2) var(--s-3)}
+.feature-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:var(--s-3)}
+.feature-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;margin-block:var(--s-4) var(--s-3);font-size:.9375rem;color:var(--t-mid)}
+.feature-price b{font-family:"Inter Tight",Inter,sans-serif;font-size:2.4rem;font-weight:700;line-height:1;letter-spacing:-.04em;color:var(--t-hi);font-variant-numeric:tabular-nums}
+/* On phones the photo sits above the text instead of behind it */
+@media(max-width:759px){
+  .feature{display:block;min-height:0}
+  .feature-media{position:relative;inset:auto;z-index:0;aspect-ratio:16/10}
+  .feature::after{display:none}
+}
+
+/* ---------- 11d. Day-by-day itinerary (package pages) ---------- */
+.days{display:grid;gap:var(--s-3)}
+.day{
+  display:grid;gap:var(--s-2) var(--s-5);
+  padding:var(--s-4) var(--s-3);
+  border:1px solid var(--line);border-radius:var(--r-md);
+  background:linear-gradient(180deg,rgba(255,255,255,.045),transparent);
+}
+@media(min-width:760px){.day{grid-template-columns:120px 1fr;padding:var(--s-4)}}
+.day-num{font-family:"Inter Tight",Inter,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brand)}
+.day-num b{display:block;margin-top:4px;font-size:2.8rem;line-height:1;letter-spacing:-.04em;color:var(--t-hi)}
+.day h3{font-size:clamp(1.25rem,2.2vw,1.6rem);letter-spacing:-.03em;margin-bottom:8px}
+.day p{color:var(--t-mid)}
+.day .card-meta{margin-top:var(--s-2)}
+.day .day-opt{margin-top:12px;font-size:.9063rem;color:var(--t-lo)}
+.day .day-opt b{color:var(--blue-lt);font-weight:600}
 
 /* ---------- 12. Feature rows ---------- */
 .frow{display:grid;gap:var(--s-4);align-items:center}

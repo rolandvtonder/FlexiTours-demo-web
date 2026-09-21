@@ -3,7 +3,7 @@
 **Live demo: https://rolandvtonder.github.io/FlexiTours-demo-web/**
 
 A static site (plain HTML, CSS and JavaScript). No build step, no dependencies,
-no server-side code. **28 pages** — 6 main pages plus 22 travel guide articles.
+no server-side code. **30 pages** — 7 main pages, the Garden Route package page and 22 travel guide articles.
 
 GitHub Pages serves it straight from the `main` branch of this repo. Every push
 redeploys it automatically, usually within a minute or two.
@@ -22,7 +22,7 @@ on this site rather than the old one.
 The contact details in use (phone numbers and Cape Town address confirmed on
 15 September 2026):
 
-- WhatsApp **+27 78 047 4236** · Phone **+27 73 250 2549** · **bookings@flexi-tours.co.za**
+- WhatsApp **+27 78 047 4236** · Phone **+27 73 250 2549** · **bookings@flexi-tours.co.za** · Instagram **@flexi_tours_za**
 - Cape Town: Unit C6, The Exchange, 1 School Street, Milnerton
 - Centurion: Unit C6, Edward Park, 124 Edward Avenue, Hennopspark
 - Entity: **Flexi Tours (Pty) Ltd**
@@ -40,6 +40,8 @@ so the site shows six. If you find the seventh, add it (see below).
 ```
 index.html                 Home
 tours.html                 6 tours with full itineraries + guide prices
+packages.html              Holiday packages: 3-day, adventure, Garden Route
+garden-route.html          5-Day Garden Route Adventure, day by day
 transfers.html             Transfer rates, inclusions, why-use-us
 about.html                 Story, what you get, branches, hours
 guides.html                Index of all 22 travel guides
@@ -61,8 +63,8 @@ README.md                  This file
 
 For small changes (wording, prices, a phone number) just edit the HTML directly.
 
-The catch: the navigation and footer are repeated in all 28 pages, so changing a
-menu item by hand means editing 28 files. `_build/build.mjs` exists to avoid that
+The catch: the navigation and footer are repeated in all 30 pages, so changing a
+menu item by hand means editing 30 files. `_build/build.mjs` exists to avoid that
 — edit the shared part once there, then run:
 
 ```bash
@@ -108,6 +110,12 @@ Add an entry to `_build/articles.json` (`slug`, `title`, `excerpt`, `date`,
 and re-run the build. A new page, a card on `guides.html`, and the
 related-article links are all generated for you.
 
+### Adding or changing a package
+
+Packages are the `PACKAGES` list in `_build/build.mjs`: name, price, photo and
+the days. The Garden Route day-by-day itinerary is the `GR_DAYS` list just above
+it. Edit, re-run the build, and the home, tours and packages pages all update.
+
 ### Preview locally
 
 From this folder:
@@ -144,9 +152,9 @@ booking form and no backend, so nothing can break and there is nothing to mainta
 
 ## Checks already done
 
-Across all 28 pages:
+Across all 30 pages:
 
-- No broken internal links or missing images (1,080 references verified)
+- No broken internal links or missing images (1,281 references verified)
 - No links pointing back to the old site
 - Every image has alt text and width/height set (no layout shift)
 - Text contrast passes WCAG AA — zero failures
