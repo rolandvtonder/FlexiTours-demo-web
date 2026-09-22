@@ -14,7 +14,7 @@ mkdirSync(ROOT, { recursive: true });
 
 /* Full text of the 22 travel guides, migrated off the old site. */
 const ARTICLES = JSON.parse(readFileSync(join(HERE, "articles.json"), "utf8"));
-const guideHref = (slug) => `guide-${slug}.html`;
+const guideHref = (slug) => `guides/${slug}.html`;
 
 /* Real Google reviews. Add more by appending to this list. */
 const REVIEWS = [
@@ -96,7 +96,7 @@ const topbar = () => `<div class="topbar">
 </div>`;
 
 /* Sub-pages highlight their parent in the nav. */
-const navKey = (file) => (file.startsWith("guide-") ? "guides.html" : file === "garden-route.html" ? "packages.html" : file);
+const navKey = (file) => (file.startsWith("guides/") ? "guides.html" : file === "garden-route.html" ? "packages.html" : file);
 
 const header = (rawPage) => ((page) => `<header class="nav">
   <div class="wrap">
@@ -202,7 +202,7 @@ const articleLdJson = (a) => JSON.stringify({
     name: "Flexi Tours (Pty) Ltd",
     logo: { "@type": "ImageObject", url: "https://www.flexi-tours.co.za/assets/img/logo.png" },
   },
-  mainEntityOfPage: { "@type": "WebPage", "@id": `https://www.flexi-tours.co.za/guide-${a.slug}.html` },
+  mainEntityOfPage: { "@type": "WebPage", "@id": `https://www.flexi-tours.co.za/guides/${a.slug}.html` },
 }, null, 2);
 
 const shell = ({ file, title, desc, og, body, articleLd }) => `<!DOCTYPE html>
@@ -1224,8 +1224,17 @@ ${ctaBand("Ready to see it for yourself?")}`,
 }
 
 /* ---------------- write ---------------- */
+/* Pages in a subfolder (guides/) get "../" in front of every relative link,
+   so the templates can keep writing paths as if every page sat at the root. */
+const rebase = (html, base) => html
+  .replace(/(\s(?:href|src)=")(?!https?:|mailto:|tel:|#|data:|\/)/g, `$1${base}`)
+  .replace(/(<meta property="og:image" content=")(?!https?:)/, `$1${base}`);
+
 for (const p of pages) {
-  writeFileSync(join(ROOT, p.file), shell(p), "utf8");
+  const depth = p.file.split("/").length - 1;
+  if (depth) mkdirSync(join(ROOT, dirname(p.file)), { recursive: true });
+  const html = shell(p);
+  writeFileSync(join(ROOT, p.file), depth ? rebase(html, "../".repeat(depth)) : html, "utf8");
 }
 console.log("Pages written to the repo root:");
 console.log("  core   : " + pages.filter((p) => !p.articleLd).map((p) => p.file).join(", "));

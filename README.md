@@ -46,7 +46,7 @@ transfers.html             Transfer rates, inclusions, why-use-us
 about.html                 Story, what you get, branches, hours
 guides.html                Index of all 22 travel guides
 contact.html               Contact details, branches, hours
-guide-<slug>.html          22 article pages, one per travel guide
+guides/<slug>.html         22 article pages, one per travel guide
 assets/
   css/styles.css           All styling. Design tokens at the top.
   js/main.js               Nav, mobile menu, scroll animations
@@ -179,4 +179,4 @@ Across all 30 pages:
   biggest further improvement to the site.
 - When you switch the real domain over, the old `?post=...` article URLs will stop
   working. If any of them are ranking in Google, set up redirects to the matching
-  `guide-<slug>.html` page — the slugs are unchanged, so it is a mechanical mapping.
+  `guides/<slug>.html` page — the slugs are unchanged, so it is a mechanical mapping.
