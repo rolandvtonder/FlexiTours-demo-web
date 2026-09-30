@@ -209,6 +209,7 @@ const shell = ({ file, title, desc, og, body, articleLd }) => `<!DOCTYPE html>
 <html lang="en-ZA">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
 <meta name="description" content="${desc}">
